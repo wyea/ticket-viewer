@@ -1,5 +1,5 @@
 class TicketPresenter
-  def ticket_url(ticket_number)
-    "https://anar.zendesk.com/api/v2/tickets/#{ticket_number}.json"
+  def ticket_uri(ticket_number)
+    URI("https://anar.zendesk.com/api/v2/tickets/#{ticket_number}.json")
   end
 end
