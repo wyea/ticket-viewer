@@ -1,3 +1,8 @@
 Style/StringLiterals:
   EnforcedStyle: double_quotes
-  Enabled: true
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+
+Documentation:
+  Enabled: false
