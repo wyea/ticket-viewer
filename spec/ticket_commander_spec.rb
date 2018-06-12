@@ -4,6 +4,18 @@ require "ticket_commander"
 RSpec.describe TicketCommander do
   let(:ticket_commander) { TicketCommander.new }
 
+  describe "#enter_command" do
+    let(:enter_command) { ticket_commander.enter_command(command) }
+
+    context "when command is invalid" do
+      let(:command) { "A53" }
+
+      it "returns a command is invalid message" do
+        expect(enter_command).to eq("Invalid command: 'A53'")
+      end
+    end
+  end
+
   describe "#validate_command" do
     let(:validate_command) { ticket_commander.validate_command(command) }
 
