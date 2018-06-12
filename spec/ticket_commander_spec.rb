@@ -103,7 +103,7 @@ RSpec.describe TicketCommander do
       let(:command) { "T 1" }
 
       it "returns '1'" do
-        expect(ticket_number).to eq('1')
+        expect(ticket_number).to eq("1")
       end
     end
 
@@ -111,7 +111,7 @@ RSpec.describe TicketCommander do
       let(:command) { "T 53" }
 
       it "returns '53'" do
-        expect(ticket_number).to eq('53')
+        expect(ticket_number).to eq("53")
       end
     end
   end
