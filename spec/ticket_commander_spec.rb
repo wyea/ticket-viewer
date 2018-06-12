@@ -62,6 +62,14 @@ RSpec.describe TicketCommander do
         end
       end
 
+      context "when the ticket number is 0" do
+        let(:command) { "T 0" }
+
+        it "returns nil" do
+          expect(validate_command).to be_nil
+        end
+      end
+
       context "when there is no T before a ticket number" do
         let(:command) { "53" }
 
@@ -84,6 +92,26 @@ RSpec.describe TicketCommander do
         it "returns nil" do
           expect(validate_command).to be_nil
         end
+      end
+    end
+  end
+
+  describe "#ticket_number" do
+    let(:ticket_number) { ticket_commander.ticket_number(command) }
+
+    context "when command is 'T 1'" do
+      let(:command) { "T 1" }
+
+      it "returns '1'" do
+        expect(ticket_number).to eq('1')
+      end
+    end
+
+    context "when command is 'T 53'" do
+      let(:command) { "T 53" }
+
+      it "returns '53'" do
+        expect(ticket_number).to eq('53')
       end
     end
   end
