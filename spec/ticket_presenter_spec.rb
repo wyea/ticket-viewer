@@ -43,4 +43,17 @@ RSpec.describe TicketPresenter do
       end
     end
   end
+
+  describe "#convert" do
+    let(:convert)  { ticket_presenter.convert(response) }
+    let(:response) { ticket_presenter.fetch_info(uri) }
+
+    context "when the address is valid" do
+      let(:uri) { URI("https://anar.zendesk.com/api/v2/tickets/53.json") }
+
+      it "returns a hash" do
+        expect(convert).to be_an_instance_of(Hash)
+      end
+    end
+  end
 end
