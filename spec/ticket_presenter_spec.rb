@@ -37,6 +37,10 @@ RSpec.describe TicketPresenter do
       it "returns OK" do
         expect(fetch_info.msg).to eq("OK")
       end
+
+      it "returns code 200" do
+        expect(fetch_info.code).to eq("200")
+      end
     end
   end
 end
