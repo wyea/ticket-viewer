@@ -42,6 +42,48 @@ RSpec.describe TicketPresenter do
         expect(fetch_info.code).to eq("200")
       end
     end
+
+    context "when the address is invalid" do
+      let(:uri) { URI("https://anar.zendesk.com/api/v2/tiC_Cets/53.json") }
+
+      it "returns Not Found" do
+        expect(fetch_info.msg).to eq("Not Found")
+      end
+
+      it "returns code 404" do
+        expect(fetch_info.code).to eq("404")
+      end
+    end
+
+    context "when ticket number doesn't exist" do
+      let(:uri) { URI("https://anar.zendesk.com/api/v2/tickets/353.json") }
+
+      it "returns Not Found" do
+        expect(fetch_info.msg).to eq("Not Found")
+      end
+
+      it "returns code 404" do
+        expect(fetch_info.code).to eq("404")
+      end
+    end
+
+    context "when password is incorrect" do
+      let(:uri) { URI("https://anar.zendesk.com/api/v2/tickets/53.json") }
+
+      it "returns Unauthorized" do
+        cached_password = ENV["PASSWORD"]
+        ENV["PASSWORD"] = "aaaaa"
+        expect(fetch_info.msg).to eq("Unauthorized")
+        ENV["PASSWORD"] = cached_password
+      end
+
+      it "returns code 401" do
+        cached_password = ENV["PASSWORD"]
+        ENV["PASSWORD"] = "aaaaa"
+        expect(fetch_info.code).to eq("401")
+        ENV["PASSWORD"] = cached_password
+      end
+    end
   end
 
   describe "#convert" do
