@@ -27,4 +27,16 @@ RSpec.describe TicketPresenter do
       end
     end
   end
+
+  describe "#fetch_info" do
+    let(:fetch_info) { ticket_presenter.fetch_info(uri) }
+
+    context "when the address is valid" do
+      let(:uri) { URI("https://anar.zendesk.com/api/v2/tickets/53.json") }
+
+      it "returns OK" do
+        expect(fetch_info.msg).to eq("OK")
+      end
+    end
+  end
 end
