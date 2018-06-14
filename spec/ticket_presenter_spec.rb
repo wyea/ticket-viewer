@@ -34,58 +34,13 @@ RSpec.describe TicketPresenter do
     context "ticket number is valid and authorization is successful" do
       let(:ticket_number) { "53" }
 
-      it "returns a hash with the ticket data" do
-        expect(view_ticket).to eq(
-          {"ticket"=>
-           {"url"=>"https://anar.zendesk.com/api/v2/tickets/53.json",
-            "id"=>53,
-            "external_id"=>nil,
-            "via"=>{"channel"=>"api",
-                    "source"=>{"from"=>{}, "to"=>{}, "rel"=>nil}},
-           "created_at"=>"2018-06-06T03:20:10Z",
-           "updated_at"=>"2018-06-10T11:09:24Z",
-           "type"=>nil,
-           "subject"=>"reprehenderit id non aliqua enim",
-           "raw_subject"=>"reprehenderit id non aliqua enim",
-           "description"=>
-           "Consequat ipsum deserunt eiusmod veniam id ex. Nulla "\
-             "consectetur et sit voluptate. Id qui Lorem amet laborum "\
-             "sunt aute reprehenderit minim fugiat deserunt deserunt "\
-             "dolor sint. Consectetur voluptate elit esse eiusmod magna. "\
-             "Exercitation nulla deserunt laborum dolor et voluptate fugiat "\
-             "minim. Lorem Lorem ullamco id Lorem ea officia ad laborum "\
-             "nulla consectetur.\n\n"\
-             "Adipisicing esse aute eiusmod laboris aute aliquip. Laboris "\
-             "irure eu velit exercitation qui ullamco veniam mollit esse "\
-             "aliquip consequat. In id voluptate amet in sunt aliquip. "\
-             "Nostrud consequat officia exercitation aliqua nostrud quis. "\
-             "Reprehenderit amet sint do ex mollit nulla enim in in ea "\
-             "elit Lorem.",
-             "priority"=>nil,
-             "status"=>"open",
-             "recipient"=>nil,
-             "requester_id"=>363050229293,
-             "submitter_id"=>363050229293,
-             "assignee_id"=>363050229293,
-             "organization_id"=>360029891553,
-             "group_id"=>360001068553,
-             "collaborator_ids"=>[],
-             "follower_ids"=>[],
-             "email_cc_ids"=>[],
-             "forum_topic_id"=>nil,
-             "problem_id"=>nil,
-             "has_incidents"=>false,
-             "is_public"=>true,
-             "due_at"=>nil,
-             "tags"=>["culpa", "ex", "non"],
-             "custom_fields"=>[],
-             "satisfaction_rating"=>nil,
-             "sharing_agreement_ids"=>[],
-             "fields"=>[],
-             "followup_ids"=>[],
-             "brand_id"=>360000737293,
-             "allow_channelback"=>false,
-             "allow_attachments"=>true}}
+      it "returns the ticket id (53)" do
+        expect(view_ticket["ticket"]["id"]).to eq(53)
+      end
+
+      it "returns the ticket subject" do
+        expect(view_ticket["ticket"]["subject"]).to eq(
+          "reprehenderit id non aliqua enim"
         )
       end
     end
