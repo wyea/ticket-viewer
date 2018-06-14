@@ -23,7 +23,7 @@ class TicketPresenter
   end
 
   def convert(response)
-    if response.code == "200"
+    if valid_json?(response.code)
       JSON.parse(response.body)
     end
   end

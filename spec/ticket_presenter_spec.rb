@@ -153,7 +153,7 @@ RSpec.describe TicketPresenter do
     let(:convert)  { ticket_presenter.convert(response) }
     let(:response) { ticket_presenter.fetch_info(uri) }
 
-    context "when the address is valid" do
+    context "when the response is valid json" do
       let(:uri) { URI("https://anar.zendesk.com/api/v2/tickets/53.json") }
 
       it "returns a hash" do
