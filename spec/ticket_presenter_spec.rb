@@ -98,4 +98,27 @@ RSpec.describe TicketPresenter do
       end
     end
   end
+
+  describe "#valid_json?" do
+    let(:valid_json) { ticket_presenter.valid_json?(json) }
+
+    context "when json is valid" do
+      let(:json) do
+        "{\"ticket\":{\"url\":\"https://anar.zendesk.com/"\
+          "api/v2/tickets/53.json\",\"id\":53}}"
+      end
+
+      it "returns true" do
+        expect(valid_json).to be true
+      end
+    end
+
+    context "when json is invalid" do
+      let(:json) { "I wish I was valid :(" }
+
+      it "returns false" do
+        expect(valid_json).to be false
+      end
+    end
+  end
 end

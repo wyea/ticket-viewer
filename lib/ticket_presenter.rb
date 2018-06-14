@@ -21,4 +21,11 @@ class TicketPresenter
       JSON.parse(response.body)
     end
   end
+
+  def valid_json?(json)
+    JSON.parse(json)
+    true
+  rescue JSON::ParserError
+    false
+  end
 end
