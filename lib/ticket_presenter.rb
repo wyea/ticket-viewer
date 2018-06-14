@@ -10,8 +10,8 @@ class TicketPresenter
 
   def view_ticket(ticket_number)
     uri = ticket_uri(ticket_number)
-    json_data = fetch_info(uri)
-    convert(json_data)
+    response = fetch_info(uri)
+    convert(response)
   end
 
   def fetch_info(uri)
