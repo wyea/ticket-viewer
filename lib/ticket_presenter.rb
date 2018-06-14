@@ -8,6 +8,12 @@ class TicketPresenter
     URI("https://anar.zendesk.com/api/v2/tickets/#{ticket_number}.json")
   end
 
+  def view_ticket(ticket_number)
+    uri = ticket_uri(ticket_number)
+    json_data = fetch_info(uri)
+    convert(json_data)
+  end
+
   def fetch_info(uri)
     request = Net::HTTP::Get.new(uri)
     request.basic_auth(ENV["EMAIL_ADDRESS"], ENV["PASSWORD"])
