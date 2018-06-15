@@ -92,7 +92,7 @@ RSpec.describe TicketPresenter do
 
     context "when the hash does not include info about a ticket" do
       let(:hash) do
-        { "berries" => ["tomatos", "eggplants", "cucumbers"]}
+        { "berries" => %w[tomatos eggplants cucumbers] }
       end
 
       it "returns a message saying the hash doesn't include ticket info" do
