@@ -2,7 +2,7 @@ require_relative "ticket_presenter"
 
 class TicketCommander
   def initialize
-    @tp = TicketPresenter.new
+    @ticket_presenter = TicketPresenter.new
   end
 
   def enter_command(command)
@@ -21,7 +21,7 @@ class TicketCommander
   def execute_command(command)
     if /\AT\s[1-9]\d*\z/ =~ command
       number = ticket_number(command)
-      @tp.view_ticket(number)
+      @ticket_presenter.view_ticket(number)
     end
   end
 
