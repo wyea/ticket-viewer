@@ -34,13 +34,58 @@ RSpec.describe TicketPresenter do
     context "ticket number is valid and authorization is successful" do
       let(:ticket_number) { "53" }
 
-      it "returns the ticket id (53)" do
-        expect(view_ticket["ticket"]["id"]).to eq(53)
+      it "returns a message that includes the ticket subject" do
+        expect(view_ticket).to include(
+          "Subject:        reprehenderit id non aliqua enim\n"
+        )
+      end
+    end
+
+    context "ticket number is invalid, but authorization is successful" do
+      let(:ticket_number) { "1153" }
+
+      it "returns a message saying that the record wasn't found" do
+        expect(view_ticket).to eq(
+          "The record wasn't found... Most likely, the ticket was deleted "\
+          "or you are from the future where it already exists."
+        )
+      end
+    end
+
+    context "ticket number is valid, but authorization is unsuccessful" do
+      let(:ticket_number) { "53" }
+
+      it "returns a message saying that authorization wasn't successful" do
+        cached_password = ENV["PASSWORD"]
+        ENV["PASSWORD"] = "aaaaa"
+        expect(view_ticket).to eq(
+          "Ask your parents if you can go into the basement..."\
+          "They must give you the right password."
+        )
+        ENV["PASSWORD"] = cached_password
+      end
+    end
+  end
+
+  describe "#build_ticket_message" do
+    let(:build_ticket_message) { ticket_presenter.build_ticket_message(hash) }
+
+    context "when the hash includes info about a ticket" do
+      let(:hash) do
+        {
+          "ticket" =>
+          {
+            "url" => "https://anar.zendesk.com/api/v2/tickets/83.json",
+            "id" => 83,
+            "subject" => "anim Lorem reprehenderit Lorem esse",
+            "status" => "open"
+          }
+        }
       end
 
-      it "returns the ticket subject" do
-        expect(view_ticket["ticket"]["subject"]).to eq(
-          "reprehenderit id non aliqua enim"
+      it "returns a message that includes the ticket subject" do
+        expect(build_ticket_message).to include(
+          "Subject:        anim Lorem reprehenderit Lorem esse\n"
         )
       end
     end
@@ -136,6 +181,62 @@ RSpec.describe TicketPresenter do
 
       it "returns false" do
         expect(valid_json).to be false
+      end
+    end
+  end
+
+  describe "#parse_time" do
+    let(:parse_time) { ticket_presenter.parse_time(time) }
+
+    context "when time is valid" do
+      let(:time) { "2018-06-06T03:20:10Z" }
+
+      it "returns parsed time" do
+        expect(parse_time).to eq("Wed, 06 Jun 2018 03:20:10 GMT")
+      end
+    end
+
+    context "when time is invalid" do
+      let(:time) { "I wish I was valid :(" }
+
+      it "returns nil" do
+        expect(parse_time).to be_nil
+      end
+    end
+
+    context "when time nil" do
+      let(:time) { nil }
+
+      it "returns nil" do
+        expect(parse_time).to be_nil
+      end
+    end
+
+    context "when time not a string" do
+      let(:time) { 5 }
+
+      it "returns nil" do
+        expect(parse_time).to be_nil
+      end
+    end
+  end
+
+  describe "#valid_time?" do
+    let(:valid_time) { ticket_presenter.valid_time?(time) }
+
+    context "when time is valid" do
+      let(:time) { "2018-06-06T03:20:10Z" }
+
+      it "returns true" do
+        expect(valid_time).to be true
+      end
+    end
+
+    context "when time is invalid" do
+      let(:time) { "I wish I was valid :(" }
+
+      it "returns false" do
+        expect(valid_time).to be false
       end
     end
   end
