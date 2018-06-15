@@ -89,6 +89,18 @@ RSpec.describe TicketPresenter do
         )
       end
     end
+
+    context "when the hash does not include info about a ticket" do
+      let(:hash) do
+        { "berries" => ["tomatos", "eggplants", "cucumbers"]}
+      end
+
+      it "returns a message saying the hash doesn't include ticket info" do
+        expect(build_ticket_message).to eq(
+          "This hash doesn't know anything about a ticket... :-("
+        )
+      end
+    end
   end
 
   describe "#fetch_info" do
