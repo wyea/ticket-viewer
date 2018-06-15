@@ -1,4 +1,10 @@
+require_relative "ticket_presenter"
+
 class TicketCommander
+  def initialize
+    @tp = TicketPresenter.new
+  end
+
   def enter_command(command)
     unless validate_command(command)
       return "Invalid command: '#{command}'"
@@ -14,7 +20,8 @@ class TicketCommander
 
   def execute_command(command)
     if /\AT\s[1-9]\d*\z/ =~ command
-      # implement a view_a_ticket method 
+      number = ticket_number(command)
+      @tp.view_ticket(number)
     end
   end
 

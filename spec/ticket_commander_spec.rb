@@ -96,6 +96,45 @@ RSpec.describe TicketCommander do
     end
   end
 
+  describe "#execute_command" do
+    let(:execute_command) { ticket_commander.execute_command(command) }
+
+    context "when command is 'T 53' - calling an existing ticket" do
+      let(:command) { "T 53" }
+
+      it "returns a message that includes the ticket subject" do
+        expect(execute_command).to include(
+          "Subject:        reprehenderit id non aliqua enim\n"
+        )
+      end
+    end
+
+    context "when command is 'T 1153' - calling a non-existing ticket" do
+      let(:command) { "T 1153" }
+
+      it "returns a message saying that the record wasn't found" do
+        expect(execute_command).to eq(
+          "The record wasn't found... Most likely, the ticket was deleted "\
+          "or you are from the future where it already exists."
+        )
+      end
+    end
+
+    context "ticket command is valid, but authorization is unsuccessful" do
+      let(:command) { "T 53" }
+
+      it "returns a message saying that authorization wasn't successful" do
+        cached_password = ENV["PASSWORD"]
+        ENV["PASSWORD"] = "aaaaa"
+        expect(execute_command).to eq(
+          "Ask your parents if you can go into the basement..."\
+          "They must give you the right password."
+        )
+        ENV["PASSWORD"] = cached_password
+      end
+    end
+  end
+
   describe "#ticket_number" do
     let(:ticket_number) { ticket_commander.ticket_number(command) }
 
