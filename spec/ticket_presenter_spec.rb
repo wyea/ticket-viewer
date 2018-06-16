@@ -54,15 +54,44 @@ RSpec.describe TicketPresenter do
     let(:view_ticket_list) { ticket_presenter.view_ticket_list(path) }
 
     context "when the address is correct and authorization is successful" do
-      let(:path) {
+      let(:path) do
         "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
-      }
+      end
 
       it "returns a string with a ticket list" do
         expect(view_ticket_list).to include(
           "7 | open     | Wed, 06 Jun 2018 03:19:57 GMT | "\
           "cillum quis nostrud labore amet"
         )
+      end
+    end
+
+    context "when the address is incorrect, but authorization successful" do
+      let(:path) do
+        "https://anar.zendesk.com/api/v2/tic_ke_ts.js_on"
+      end
+
+      it "returns a message saying that the record wasn't found" do
+        expect(view_ticket_list).to eq(
+          "The record wasn't found... Most likely, it was deleted "\
+          "or you are from the future where it already exists."
+        )
+      end
+    end
+
+    context "when the address is correct, but authorization unseccessful" do
+      let(:path) do
+        "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+      end
+
+      it "returns a message saying that authorization wasn't successful" do
+        cached_password = ENV["PASSWORD"]
+        ENV["PASSWORD"] = "aaaaa"
+        expect(view_ticket_list).to eq(
+          "Ask your parents if you can go into the basement..."\
+          "They must give you the right password."
+        )
+        ENV["PASSWORD"] = cached_password
       end
     end
   end
