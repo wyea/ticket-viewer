@@ -28,6 +28,109 @@ RSpec.describe TicketPresenter do
     end
   end
 
+  describe "#ticket_list_uri" do
+    let(:ticket_list_uri) { ticket_presenter.ticket_list_uri(path) }
+
+    context "when the path is valid" do
+      let(:path) do
+        "https://anar.zendesk.com/api/v2/tickets.json?page=3&per_page=25"
+      end
+
+      it "returns a valid path" do
+        expect(ticket_list_uri.path).to eq(
+          "/api/v2/tickets.json"
+        )
+      end
+
+      it "returns valid queries" do
+        expect(ticket_list_uri.query).to eq(
+          "page=3&per_page=25"
+        )
+      end
+    end
+  end
+
+  describe "#view_ticket_list" do
+    let(:view_ticket_list) { ticket_presenter.view_ticket_list(path) }
+
+    context "when the address is correct and authorization is successful" do
+      let(:path) {
+        "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+      }
+
+      it "returns a string with a ticket list" do
+        expect(view_ticket_list).to include(
+          "7 | open     | Wed, 06 Jun 2018 03:19:57 GMT | "\
+          "cillum quis nostrud labore amet"
+        )
+      end
+    end
+  end
+
+  describe "#build_ticket_list" do
+    let(:build_ticket_list) { ticket_presenter.build_ticket_list(hash) }
+
+    context "when the hash includes info about tickets" do
+      let(:hash) do
+        {
+          "tickets" =>
+          [
+            {
+              "id" => 83,
+              "updated_at" => "2018-06-06T03:20:02Z",
+              "subject" => "anim Lorem reprehenderit Lorem esse",
+              "status" => "open"
+            },
+            {
+              "id" => 32,
+              "updated_at" => "2018-06-10T09:25:32Z",
+              "subject" => "La la la",
+              "status" => "closed"
+            }
+          ]
+        }
+      end
+
+      it "returns a message that includes a ticket's subject" do
+        expect(build_ticket_list).to include(
+          "anim Lorem reprehenderit Lorem esse"
+        )
+      end
+
+      it "returns a message that includes a ticket's status" do
+        expect(build_ticket_list).to include(
+          "closed"
+        )
+      end
+
+      it "returns a message that includes the header" do
+        expect(build_ticket_list).to include(
+          "id | Status   | Last updated"
+        )
+      end
+    end
+
+    context "when the hash does not include info about tickets" do
+      let(:hash) do
+        { "berries" => %w[tomatos eggplants cucumbers] }
+      end
+
+      it "returns a message saying the hash doesn't include ticket info" do
+        expect(build_ticket_list).to eq(
+          "That server doesn't know anything about tickets... :-("
+        )
+      end
+    end
+  end
+
+  describe "#ticket_list_header" do
+    let(:ticket_list_header) { ticket_presenter.ticket_list_header }
+
+    it "returns a table header" do
+      expect(ticket_list_header).to include("| Status   |")
+    end
+  end
+
   describe "#view_ticket" do
     let(:view_ticket) { ticket_presenter.view_ticket(ticket_number) }
 
@@ -46,7 +149,7 @@ RSpec.describe TicketPresenter do
 
       it "returns a message saying that the record wasn't found" do
         expect(view_ticket).to eq(
-          "The record wasn't found... Most likely, the ticket was deleted "\
+          "The record wasn't found... Most likely, it was deleted "\
           "or you are from the future where it already exists."
         )
       end
@@ -97,7 +200,7 @@ RSpec.describe TicketPresenter do
 
       it "returns a message saying the hash doesn't include ticket info" do
         expect(build_ticket_message).to eq(
-          "This hash doesn't know anything about a ticket... :-("
+          "That server doesn't know anything about a ticket... :-("
         )
       end
     end

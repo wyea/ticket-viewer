@@ -114,7 +114,7 @@ RSpec.describe TicketCommander do
 
       it "returns a message saying that the record wasn't found" do
         expect(execute_command).to eq(
-          "The record wasn't found... Most likely, the ticket was deleted "\
+          "The record wasn't found... Most likely, it was deleted "\
           "or you are from the future where it already exists."
         )
       end

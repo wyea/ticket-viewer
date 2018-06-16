@@ -9,6 +9,51 @@ class TicketPresenter
     URI("https://anar.zendesk.com/api/v2/tickets/#{ticket_number}.json")
   end
 
+  def ticket_list_uri(path)
+    URI(path)
+  end
+
+  def ticket_list_first_page
+    "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+  end
+
+  def view_ticket_list(path = ticket_list_first_page)
+    uri = ticket_list_uri(path)
+    response = fetch_info(uri)
+    if response.msg == "OK"
+      hash = convert(response)
+      build_ticket_list(hash)
+    elsif response.msg == "Not Found"
+      record_was_not_found
+    elsif response.msg == "Unauthorized"
+      unauthorized
+    end
+  end
+
+  def build_ticket_list(hash)
+    if hash["tickets"]
+      ticket_list = hash["tickets"].reduce([]) do |list, ticket|
+        list.push(
+          ticket["id"].to_s.rjust(4) + " | " +
+          ticket["status"].to_s.ljust(8) + " | " +
+          parse_time(ticket["updated_at"]).to_s.ljust(29) + " | " +
+          ticket["subject"].to_s.ljust(68) + "\n"
+        )
+      end
+      ticket_list_header + ticket_list.join("")
+    else
+      "That server doesn't know anything about tickets... :-("
+    end
+  end
+
+  def ticket_list_header
+    "id".rjust(4) + " | " +
+      "Status".ljust(8) + " | " +
+      "Last updated".ljust(29) + " | " +
+      "Subject".ljust(68) + "\n " +
+      "-" * 112 + "\n"
+  end
+
   def view_ticket(ticket_number)
     uri = ticket_uri(ticket_number)
     response = fetch_info(uri)
@@ -31,7 +76,7 @@ class TicketPresenter
         "Subject:        #{hash['ticket']['subject']}\n"\
         "Description:    #{hash['ticket']['description']}"
     else
-      "This hash doesn't know anything about a ticket... :-("
+      "That server doesn't know anything about a ticket... :-("
     end
   end
 
@@ -68,7 +113,7 @@ class TicketPresenter
   end
 
   def record_was_not_found
-    "The record wasn't found... Most likely, the ticket was deleted "\
+    "The record wasn't found... Most likely, it was deleted "\
       "or you are from the future where it already exists."
   end
 
