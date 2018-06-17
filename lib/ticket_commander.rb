@@ -3,6 +3,7 @@ require_relative "ticket_presenter"
 class TicketCommander
   def initialize
     @ticket_presenter = TicketPresenter.new
+    @multipage_mode   = @ticket_presenter.multipage_mode
   end
 
   def enter_command(command)
@@ -14,7 +15,11 @@ class TicketCommander
   end
 
   def validate_command(command)
-    command_regex = /\A(A|T)((?<=A)$|(?<=T)\s[1-9]\d*)\z/
+    command_regex = if @multipage_mode
+                      /\A(N|P|M)$\z/
+                    else
+                      /\A(A|T)((?<=A)$|(?<=T)\s[1-9]\d*)\z/
+                    end
     command_regex =~ command
   end
 
