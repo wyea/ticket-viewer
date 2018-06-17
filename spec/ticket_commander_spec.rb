@@ -270,4 +270,58 @@ RSpec.describe TicketCommander do
       end
     end
   end
+
+  describe "#multipage_mode" do
+    let(:multipage_mode)    { ticket_commander.multipage_mode }
+    let(:see_first_page)    { ticket_commander.execute_command("A") }
+    let(:call_general_menu) { ticket_commander.execute_command("M") }
+
+    context "before the A command was called" do
+      it "returns false" do
+        expect(multipage_mode).to be false
+      end
+    end
+
+    context "when the A command was called once" do
+      it "returns true" do
+        see_first_page
+        expect(multipage_mode).to be true
+      end
+    end
+
+    context "when the A command was called following by the M command" do
+      it "returns false" do
+        see_first_page
+        call_general_menu
+        expect(multipage_mode).to be false
+      end
+    end
+  end
+
+  describe "#general_mode" do
+    let(:multipage_mode) { ticket_commander.multipage_mode }
+    let(:see_first_page) { ticket_commander.execute_command("A") }
+    let(:general_mode)   { ticket_commander.general_mode }
+
+    context "before the A command was called" do
+      it "returns false" do
+        expect(multipage_mode).to be false
+      end
+    end
+
+    context "when the A command was called once" do
+      it "returns true" do
+        see_first_page
+        expect(multipage_mode).to be true
+      end
+    end
+
+    context "when the A command was called following by general_mode" do
+      it "returns false" do
+        see_first_page
+        general_mode
+        expect(multipage_mode).to be false
+      end
+    end
+  end
 end

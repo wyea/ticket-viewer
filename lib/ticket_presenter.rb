@@ -5,8 +5,8 @@ require "json"
 require "time"
 
 class TicketPresenter
-  attr_reader :multipage_mode
-  attr_reader :number_of_pages
+  attr_accessor :multipage_mode
+  attr_reader   :number_of_pages
 
   def initialize
     @multipage_mode  = false
@@ -59,7 +59,7 @@ class TicketPresenter
   end
 
   def paginate(hash)
-    @multipage_mode  =  true if hash["next_page"]
+    @multipage_mode  =  hash["next_page"] ? true : false
     @next_page       =  hash["next_page"] || ""
     @previous_page   =  hash["previous_page"] || ""
     @number_of_pages = (hash["count"].to_f / 25).ceil

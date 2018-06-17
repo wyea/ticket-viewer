@@ -34,11 +34,19 @@ class TicketCommander
     when "P"
       @ticket_presenter.previous_page
     else
-      # Main menu
+      general_mode
     end
   end
 
   def ticket_number(command)
     command.split(" ").last
+  end
+
+  def multipage_mode
+    @ticket_presenter.multipage_mode
+  end
+
+  def general_mode
+    @ticket_presenter.multipage_mode = false
   end
 end
