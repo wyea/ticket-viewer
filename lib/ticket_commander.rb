@@ -1,8 +1,10 @@
 require_relative "ticket_presenter"
+require_relative "ticket_pager"
 
 class TicketCommander
   def initialize
     @ticket_presenter = TicketPresenter.new
+    @ticket_pager     = TicketPager.new
   end
 
   def enter_command(command)
@@ -14,7 +16,7 @@ class TicketCommander
   end
 
   def validate_command(command)
-    command_regex = if @ticket_presenter.multipage_mode
+    command_regex = if @ticket_pager.multipage_mode
                       /\A(N|P|M)$\z/
                     else
                       /\A(A|T)((?<=A)$|(?<=T)\s[1-9]\d*)\z/
@@ -25,14 +27,14 @@ class TicketCommander
   def execute_command(command)
     case command
     when "A"
-      @ticket_presenter.view_ticket_list
+      @ticket_pager.view_ticket_list
+    when "N"
+      @ticket_pager.next_page
+    when "P"
+      @ticket_pager.previous_page
     when /\AT\s[1-9]\d*\z/
       number = ticket_number(command)
       @ticket_presenter.view_ticket(number)
-    when "N"
-      @ticket_presenter.next_page
-    when "P"
-      @ticket_presenter.previous_page
     else
       general_mode
     end
@@ -43,10 +45,10 @@ class TicketCommander
   end
 
   def multipage_mode
-    @ticket_presenter.multipage_mode
+    @ticket_pager.multipage_mode
   end
 
   def general_mode
-    @ticket_presenter.multipage_mode = false
+    @ticket_pager.multipage_mode = false
   end
 end

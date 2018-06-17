@@ -2,10 +2,10 @@ require "spec_helper"
 require "ticket_commander"
 
 RSpec.describe TicketCommander do
-  let(:ticket_commander) { TicketCommander.new }
+  subject { TicketCommander.new }
 
   describe "#enter_command" do
-    let(:enter_command) { ticket_commander.enter_command(command) }
+    let(:enter_command) { subject.enter_command(command) }
 
     context "when command is invalid" do
       let(:command) { "A53" }
@@ -17,8 +17,8 @@ RSpec.describe TicketCommander do
   end
 
   describe "#validate_command" do
-    let(:validate_command) { ticket_commander.validate_command(command) }
-    let(:see_first_page)   { ticket_commander.execute_command("A") }
+    let(:validate_command) { subject.validate_command(command) }
+    let(:see_first_page)   { subject.execute_command("A") }
 
     context "when outside the multipage mode" do
       context "when command is valid" do
@@ -26,7 +26,6 @@ RSpec.describe TicketCommander do
           let(:command) { "A" }
 
           it "returns 0" do
-            ticket_commander.instance_variable_set(:@multipage_mode, false)
             expect(validate_command).to eq(0)
           end
         end
@@ -35,7 +34,6 @@ RSpec.describe TicketCommander do
           let(:command) { "T 53" }
 
           it "returns 0" do
-            ticket_commander.instance_variable_set(:@multipage_mode, false)
             expect(validate_command).to eq(0)
           end
         end
@@ -116,15 +114,6 @@ RSpec.describe TicketCommander do
             expect(validate_command).to be_nil
           end
         end
-
-        context "when there command is 'A 53' - always invalid" do
-          let(:command) { "A 53" }
-
-          it "returns nil" do
-            ticket_commander.instance_variable_set(:@multipage_mode, true)
-            expect(validate_command).to be_nil
-          end
-        end
       end
     end
 
@@ -188,7 +177,7 @@ RSpec.describe TicketCommander do
   end
 
   describe "#execute_command" do
-    let(:execute_command) { ticket_commander.execute_command(command) }
+    let(:execute_command) { subject.execute_command(command) }
 
     context "when command is 'A' - calling a list of tickets" do
       let(:command) { "A" }
@@ -252,7 +241,7 @@ RSpec.describe TicketCommander do
   end
 
   describe "#ticket_number" do
-    let(:ticket_number) { ticket_commander.ticket_number(command) }
+    let(:ticket_number) { subject.ticket_number(command) }
 
     context "when command is 'T 1'" do
       let(:command) { "T 1" }
@@ -272,9 +261,9 @@ RSpec.describe TicketCommander do
   end
 
   describe "#multipage_mode" do
-    let(:multipage_mode)    { ticket_commander.multipage_mode }
-    let(:see_first_page)    { ticket_commander.execute_command("A") }
-    let(:call_general_menu) { ticket_commander.execute_command("M") }
+    let(:multipage_mode)    { subject.multipage_mode }
+    let(:see_first_page)    { subject.execute_command("A") }
+    let(:call_general_menu) { subject.execute_command("M") }
 
     context "before the A command was called" do
       it "returns false" do
@@ -299,9 +288,9 @@ RSpec.describe TicketCommander do
   end
 
   describe "#general_mode" do
-    let(:multipage_mode) { ticket_commander.multipage_mode }
-    let(:see_first_page) { ticket_commander.execute_command("A") }
-    let(:general_mode)   { ticket_commander.general_mode }
+    let(:multipage_mode) { subject.multipage_mode }
+    let(:see_first_page) { subject.execute_command("A") }
+    let(:general_mode)   { subject.general_mode }
 
     context "before the A command was called" do
       it "returns false" do
