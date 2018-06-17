@@ -1,3 +1,13 @@
+begin
+  require "dotenv/load"
+rescue LoadError
+  puts "* Hey, make sure you took care about the environmental variables!!!"
+end
+require "json"
+require "net/http"
+require "openssl"
+require "time"
+
 require_relative "ticket_commander"
 
 def general_menu

@@ -1,9 +1,3 @@
-require "net/http"
-require "openssl"
-require "dotenv/load"
-require "json"
-require "time"
-
 module TicketDownloader
   def fetch_info(uri)
     request = Net::HTTP::Get.new(uri)
