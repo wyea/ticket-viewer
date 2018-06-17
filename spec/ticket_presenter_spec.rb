@@ -146,7 +146,82 @@ RSpec.describe TicketPresenter do
 
       it "returns a message saying the hash doesn't include ticket info" do
         expect(build_ticket_list).to eq(
-          "That server doesn't know anything about tickets... :-("
+          "The server doesn't know anything about "\
+          "the page you want to see... :-("
+        )
+      end
+    end
+  end
+
+  describe "#multipage_mode" do
+    let(:multipage_mode)   { ticket_presenter.multipage_mode }
+    let(:view_ticket_list) { ticket_presenter.view_ticket_list(path) }
+    let(:path) do
+      "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+    end
+
+    context "when no pages were seen yet" do
+      it "returns false" do
+        expect(multipage_mode).to be false
+      end
+    end
+
+    context "when view_ticket_list was already executed" do
+      it "returns true if there is next page" do
+        view_ticket_list
+        expect(multipage_mode).to be true
+      end
+    end
+  end
+
+  describe "#next_page" do
+    let(:next_page) { ticket_presenter.next_page }
+    let(:view_ticket_list) { ticket_presenter.view_ticket_list(path) }
+    let(:path) do
+      "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+    end
+
+    context "when view_ticket_list wasn't executed yet" do
+      it "returns a message saying that the record wasn't found" do
+        expect(next_page).to eq(
+          "The record wasn't found... Most likely, it was deleted "\
+          "or you are from the future where it already exists."
+        )
+      end
+    end
+
+    context "when view_ticket_list was executed once" do
+      it "returns second page that include the following text" do
+        view_ticket_list
+        expect(next_page).to include(
+          "officia esse nostrud est exercitation"
+        )
+      end
+    end
+  end
+
+  describe "#previous_page" do
+    let(:previous_page) { ticket_presenter.previous_page }
+    let(:view_ticket_list) { ticket_presenter.view_ticket_list(path) }
+    let(:path) do
+      "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+    end
+
+    context "when view_ticket_list wasn't executed yet" do
+      it "returns a message saying that the record wasn't found" do
+        expect(previous_page).to eq(
+          "The record wasn't found... Most likely, it was deleted "\
+          "or you are from the future where it already exists."
+        )
+      end
+    end
+
+    context "when we are on the first page and there is no previous one" do
+      it "returns a message saying that the record wasn't found" do
+        view_ticket_list
+        expect(previous_page).to eq(
+          "The record wasn't found... Most likely, it was deleted "\
+          "or you are from the future where it already exists."
         )
       end
     end
