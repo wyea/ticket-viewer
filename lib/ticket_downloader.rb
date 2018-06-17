@@ -8,9 +8,7 @@ module TicketDownloader
   end
 
   def convert(response)
-    if valid_json?(response.code)
-      JSON.parse(response.body)
-    end
+    JSON.parse(response.body) if valid_json?(response.code)
   end
 
   def valid_json?(json)
