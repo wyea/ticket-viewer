@@ -18,6 +18,7 @@ RSpec.describe TicketCommander do
 
   describe "#validate_command" do
     let(:validate_command) { ticket_commander.validate_command(command) }
+    let(:see_first_page)   { ticket_commander.execute_command("A") }
 
     context "when outside the multipage mode" do
       context "when command is valid" do
@@ -39,7 +40,7 @@ RSpec.describe TicketCommander do
           end
         end
 
-        context "when command is invalid" do
+        context "when comman is invalid" do
           context "when the command is 'N'" do
             let(:command) { "N" }
 
@@ -73,7 +74,7 @@ RSpec.describe TicketCommander do
           let(:command) { "N" }
 
           it "returns 0" do
-            ticket_commander.instance_variable_set(:@multipage_mode, true)
+            see_first_page
             expect(validate_command).to eq(0)
           end
         end
@@ -82,7 +83,7 @@ RSpec.describe TicketCommander do
           let(:command) { "P" }
 
           it "returns 0" do
-            ticket_commander.instance_variable_set(:@multipage_mode, true)
+            see_first_page
             expect(validate_command).to eq(0)
           end
         end
@@ -91,7 +92,7 @@ RSpec.describe TicketCommander do
           let(:command) { "M" }
 
           it "returns 0" do
-            ticket_commander.instance_variable_set(:@multipage_mode, true)
+            see_first_page
             expect(validate_command).to eq(0)
           end
         end
@@ -102,7 +103,7 @@ RSpec.describe TicketCommander do
           let(:command) { "A" }
 
           it "returns nil" do
-            ticket_commander.instance_variable_set(:@multipage_mode, true)
+            see_first_page
             expect(validate_command).to be_nil
           end
         end
@@ -111,7 +112,7 @@ RSpec.describe TicketCommander do
           let(:command) { "T 53" }
 
           it "returns nil" do
-            ticket_commander.instance_variable_set(:@multipage_mode, true)
+            see_first_page
             expect(validate_command).to be_nil
           end
         end
