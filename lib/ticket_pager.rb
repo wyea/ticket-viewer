@@ -52,19 +52,15 @@ class TicketPager
   end
 
   def next_page
-    unless @next_page.empty?
-      view_ticket_list(@next_page)
-    else
-      record_was_not_found
-    end
+    return record_was_not_found if @next_page.empty?
+
+    view_ticket_list(@next_page)
   end
 
   def previous_page
-    unless @previous_page.empty?
-      view_ticket_list(@previous_page)
-    else
-      record_was_not_found
-    end
+    return record_was_not_found if @previous_page.empty?
+
+    view_ticket_list(@previous_page)
   end
 
   def ticket_list_header
