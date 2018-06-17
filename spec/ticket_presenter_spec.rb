@@ -4,52 +4,6 @@ require "ticket_presenter"
 RSpec.describe TicketPresenter do
   let(:ticket_presenter) { TicketPresenter.new }
 
-  describe "#ticket_uri" do
-    let(:ticket_uri) { ticket_presenter.ticket_uri(ticket_number) }
-
-    context "when the ticket number is 1" do
-      let(:ticket_number) { "1" }
-
-      it "returns uri for ticket # 1" do
-        expect(ticket_uri.path).to eq(
-          "/api/v2/tickets/1.json"
-        )
-      end
-    end
-
-    context "when the ticket number is 53" do
-      let(:ticket_number) { "53" }
-
-      it "returns uri for ticket # 53" do
-        expect(ticket_uri.path).to eq(
-          "/api/v2/tickets/53.json"
-        )
-      end
-    end
-  end
-
-  describe "#ticket_list_uri" do
-    let(:ticket_list_uri) { ticket_presenter.ticket_list_uri(path) }
-
-    context "when the path is valid" do
-      let(:path) do
-        "https://anar.zendesk.com/api/v2/tickets.json?page=3&per_page=25"
-      end
-
-      it "returns a valid path" do
-        expect(ticket_list_uri.path).to eq(
-          "/api/v2/tickets.json"
-        )
-      end
-
-      it "returns valid queries" do
-        expect(ticket_list_uri.query).to eq(
-          "page=3&per_page=25"
-        )
-      end
-    end
-  end
-
   describe "#view_ticket_list" do
     let(:view_ticket_list) { ticket_presenter.view_ticket_list(path) }
 
@@ -456,6 +410,52 @@ RSpec.describe TicketPresenter do
 
       it "returns false" do
         expect(valid_time).to be false
+      end
+    end
+  end
+
+  describe "#ticket_uri" do
+    let(:ticket_uri) { ticket_presenter.ticket_uri(ticket_number) }
+
+    context "when the ticket number is 1" do
+      let(:ticket_number) { "1" }
+
+      it "returns uri for ticket # 1" do
+        expect(ticket_uri.path).to eq(
+          "/api/v2/tickets/1.json"
+        )
+      end
+    end
+
+    context "when the ticket number is 53" do
+      let(:ticket_number) { "53" }
+
+      it "returns uri for ticket # 53" do
+        expect(ticket_uri.path).to eq(
+          "/api/v2/tickets/53.json"
+        )
+      end
+    end
+  end
+
+  describe "#ticket_list_uri" do
+    let(:ticket_list_uri) { ticket_presenter.ticket_list_uri(path) }
+
+    context "when the path is valid" do
+      let(:path) do
+        "https://anar.zendesk.com/api/v2/tickets.json?page=3&per_page=25"
+      end
+
+      it "returns a valid path" do
+        expect(ticket_list_uri.path).to eq(
+          "/api/v2/tickets.json"
+        )
+      end
+
+      it "returns valid queries" do
+        expect(ticket_list_uri.query).to eq(
+          "page=3&per_page=25"
+        )
       end
     end
   end

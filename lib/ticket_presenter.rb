@@ -15,18 +15,6 @@ class TicketPresenter
     @number_of_pages = 0
   end
 
-  def ticket_uri(ticket_number)
-    URI("https://anar.zendesk.com/api/v2/tickets/#{ticket_number}.json")
-  end
-
-  def ticket_list_uri(path)
-    URI(path)
-  end
-
-  def ticket_list_first_page
-    "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
-  end
-
   def view_ticket_list(path = ticket_list_first_page)
     uri = ticket_list_uri(path)
     response = fetch_info(uri)
@@ -145,6 +133,18 @@ class TicketPresenter
     true
   rescue ArgumentError
     false
+  end
+
+  def ticket_uri(ticket_number)
+    URI("https://anar.zendesk.com/api/v2/tickets/#{ticket_number}.json")
+  end
+
+  def ticket_list_uri(path)
+    URI(path)
+  end
+
+  def ticket_list_first_page
+    "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
   end
 
   def record_was_not_found
