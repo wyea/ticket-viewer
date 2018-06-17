@@ -30,6 +30,6 @@ class TicketPresenter
   end
 
   def ticket_uri(ticket_number)
-    URI("https://anar.zendesk.com/api/v2/tickets/#{ticket_number}.json")
+    URI("#{ENV['API_URL']}tickets/#{ticket_number}.json")
   end
 end

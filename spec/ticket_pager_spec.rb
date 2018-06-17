@@ -10,7 +10,7 @@ RSpec.describe TicketPager do
 
     context "when the address is correct and authorization is successful" do
       let(:path) do
-        "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+        "#{ENV['API_URL']}tickets.json?page=1&per_page=25"
       end
 
       it "returns a string with a ticket list" do
@@ -23,7 +23,7 @@ RSpec.describe TicketPager do
 
     context "when the address is incorrect, but authorization successful" do
       let(:path) do
-        "https://anar.zendesk.com/api/v2/tic_ke_ts.js_on"
+        "#{ENV['API_URL']}tic_ke_ts.js_on"
       end
 
       it "returns a message saying that the record wasn't found" do
@@ -36,7 +36,7 @@ RSpec.describe TicketPager do
 
     context "when the address is correct, but authorization unseccessful" do
       let(:path) do
-        "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+        "#{ENV['API_URL']}tickets.json?page=1&per_page=25"
       end
 
       it "returns a message saying that authorization wasn't successful" do
@@ -112,7 +112,7 @@ RSpec.describe TicketPager do
     let(:multipage_mode)   { subject.multipage_mode }
     let(:view_ticket_list) { subject.view_ticket_list(path) }
     let(:path) do
-      "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+      "#{ENV['API_URL']}tickets.json?page=1&per_page=25"
     end
 
     context "when no pages were seen yet" do
@@ -133,7 +133,7 @@ RSpec.describe TicketPager do
     let(:next_page) { subject.next_page }
     let(:view_ticket_list) { subject.view_ticket_list(path) }
     let(:path) do
-      "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+      "#{ENV['API_URL']}tickets.json?page=1&per_page=25"
     end
 
     context "when view_ticket_list wasn't executed yet" do
@@ -159,7 +159,7 @@ RSpec.describe TicketPager do
     let(:previous_page) { subject.previous_page }
     let(:view_ticket_list) { subject.view_ticket_list(path) }
     let(:path) do
-      "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+      "#{ENV['API_URL']}tickets.json?page=1&per_page=25"
     end
 
     context "when view_ticket_list wasn't executed yet" do
@@ -195,7 +195,7 @@ RSpec.describe TicketPager do
 
     context "when the path is valid" do
       let(:path) do
-        "https://anar.zendesk.com/api/v2/tickets.json?page=3&per_page=25"
+        "#{ENV['API_URL']}tickets.json?page=3&per_page=25"
       end
 
       it "returns a valid path" do

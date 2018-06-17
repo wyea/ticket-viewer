@@ -80,6 +80,6 @@ class TicketPager
   end
 
   def ticket_list_first_page
-    "https://anar.zendesk.com/api/v2/tickets.json?page=1&per_page=25"
+    "#{ENV['API_URL']}tickets.json?page=1&per_page=25"
   end
 end

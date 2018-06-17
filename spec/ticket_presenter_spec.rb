@@ -52,7 +52,7 @@ RSpec.describe TicketPresenter do
         {
           "ticket" =>
           {
-            "url" => "https://anar.zendesk.com/api/v2/tickets/83.json",
+            "url" => "#{ENV['API_URL']}tickets/83.json",
             "id" => 83,
             "subject" => "anim Lorem reprehenderit Lorem esse",
             "status" => "open"

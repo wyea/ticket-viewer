@@ -8,7 +8,7 @@ shared_examples_for TicketDownloader do
     let(:fetch_info) { subject.fetch_info(uri) }
 
     context "when the address is valid" do
-      let(:uri) { URI("https://anar.zendesk.com/api/v2/tickets/53.json") }
+      let(:uri) { URI("#{ENV['API_URL']}tickets/53.json") }
 
       it "returns OK" do
         expect(fetch_info.msg).to eq("OK")
@@ -20,7 +20,7 @@ shared_examples_for TicketDownloader do
     end
 
     context "when the address is invalid" do
-      let(:uri) { URI("https://anar.zendesk.com/api/v2/tiC_Cets/53.json") }
+      let(:uri) { URI("#{ENV['API_URL']}tiC_Cets/53.json") }
 
       it "returns Not Found" do
         expect(fetch_info.msg).to eq("Not Found")
@@ -32,7 +32,7 @@ shared_examples_for TicketDownloader do
     end
 
     context "when ticket number doesn't exist" do
-      let(:uri) { URI("https://anar.zendesk.com/api/v2/tickets/353.json") }
+      let(:uri) { URI("#{ENV['API_URL']}tickets/353.json") }
 
       it "returns Not Found" do
         expect(fetch_info.msg).to eq("Not Found")
@@ -44,7 +44,7 @@ shared_examples_for TicketDownloader do
     end
 
     context "when password is incorrect" do
-      let(:uri) { URI("https://anar.zendesk.com/api/v2/tickets/53.json") }
+      let(:uri) { URI("#{ENV['API_URL']}tickets/53.json") }
 
       it "returns Unauthorized" do
         cached_password = ENV["PASSWORD"]
@@ -67,7 +67,7 @@ shared_examples_for TicketDownloader do
     let(:response) { subject.fetch_info(uri) }
 
     context "when the response is valid json" do
-      let(:uri) { URI("https://anar.zendesk.com/api/v2/tickets/53.json") }
+      let(:uri) { URI("#{ENV['API_URL']}tickets/53.json") }
 
       it "returns a hash" do
         expect(convert).to be_an_instance_of(Hash)
@@ -80,7 +80,7 @@ shared_examples_for TicketDownloader do
 
     context "when json is valid" do
       let(:json) do
-        "{\"ticket\":{\"url\":\"https://anar.zendesk.com/"\
+        "{\"ticket\":{\"url\":\"https://www.example.com/"\
           "api/v2/tickets/53.json\",\"id\":53}}"
       end
 
