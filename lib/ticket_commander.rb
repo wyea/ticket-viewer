@@ -19,7 +19,9 @@ class TicketCommander
   end
 
   def execute_command(command)
-    if /\AT\s[1-9]\d*\z/ =~ command
+    if /\AA$\z/ =~ command
+      @ticket_presenter.view_ticket_list
+    elsif /\AT\s[1-9]\d*\z/ =~ command
       number = ticket_number(command)
       @ticket_presenter.view_ticket(number)
     end

@@ -99,6 +99,17 @@ RSpec.describe TicketCommander do
   describe "#execute_command" do
     let(:execute_command) { ticket_commander.execute_command(command) }
 
+    context "when command is 'A' - calling a list of tickets" do
+      let(:command) { "A" }
+
+      it "returns a list of tickets that includes the following text" do
+        expect(execute_command).to include(
+          "1 | open     | Tue, 05 Jun 2018 12:42:08 GMT "\
+          "| Sample ticket: Meet the ticket"
+        )
+      end
+    end
+
     context "when command is 'T 53' - calling an existing ticket" do
       let(:command) { "T 53" }
 

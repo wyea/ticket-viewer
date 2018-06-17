@@ -2,6 +2,7 @@ require_relative "ticket_commander"
 
 def menu
   puts "* Press Ctrl-D to exit."
+  puts "* Type 'A' to see a list of tickets"
   puts "* Type 'T ###' (where ### is a ticket number: 'T 1', 'T 53', etc.),"
   puts "  make sure there is a space between the 'T' and the number"
   puts "  and press Enter/Return to see an individual ticket."
