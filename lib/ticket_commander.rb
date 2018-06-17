@@ -8,11 +8,9 @@ class TicketCommander
   end
 
   def enter_command(command)
-    unless validate_command(command)
-      return "Invalid command: '#{command}'"
-    end
+    return execute_command(command) if validate_command(command)
 
-    execute_command(command)
+    "Invalid command: '#{command}'"
   end
 
   def validate_command(command)
