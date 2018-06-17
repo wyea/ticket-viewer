@@ -23,6 +23,7 @@ Once you're in the `ticket-viewer` directory, simply run `ruby lib/ticket_viewer
 2. `T ###` (where ### is a ticket number. E.g. `T 53`). See a single ticket.
 3. `N`. Next page, if there are more that 25 tickets in total.
 4. `P`. Previous page, if there are more than 25 ticket in total.
+5. `M`. Go back to the main menu.
 
 ##### Testing
 To test the program, simply run `bundle exec rspec`.
