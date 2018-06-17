@@ -7,7 +7,7 @@ Before installing the Ticket Viewer, please make sure that you have installed th
 2. Bundler. To install Bundler please run `gem install bundler`. You will need it to run `bundle install`. **Otherwise**, please install gems listed in the Gemfile manually with `gem install gem_name`. Replace `gem_name` with a gem name.
 3. Git. Please see [the link](https://git-scm.com/downloads) for installation instructions. **Otherwise**, please [download](https://github.com/wyea/ticket-viewer/archive/master.zip) and unpack the repository manually.
 
-NOTE: Technically, you don't need to install any gems to "run" the program. `dotenv` takes care of your environment variables, [that you can do yourself](https://wiki.archlinux.org/index.php/Environment_variables). 'rspec' is only needed for testing the app. Having said that, running `bundle install` will definitelly make your life easier.
+NOTE: Technically, you don't need to install any gems to "run" the program. `dotenv` takes care of your environment variables, [that you can do yourself](https://wiki.archlinux.org/index.php/Environment_variables). `rspec` is only needed for testing the app. Having said that, running `bundle install` will definitelly make your life easier.
 
 To install the viewer locally, please do the following:
 ```sh
