@@ -2,7 +2,7 @@ require "spec_helper"
 require "ticket_commander"
 
 RSpec.describe TicketCommander do
-  subject { TicketCommander.new }
+  subject { described_class.new }
 
   describe "#enter_command" do
     let(:enter_command) { subject.enter_command(command) }
