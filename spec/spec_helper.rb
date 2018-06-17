@@ -1,3 +1,13 @@
+begin
+  require "dotenv/load"
+rescue LoadError
+  puts "* Hey, make sure you took care about the environment variables!!!\n"
+end
+require "json"
+require "net/http"
+require "openssl"
+require "time"
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
