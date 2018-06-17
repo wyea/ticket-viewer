@@ -66,11 +66,19 @@ class TicketPresenter
   end
 
   def next_page
-    view_ticket_list(@next_page) unless @next_page.empty?
+    unless @next_page.empty?
+      view_ticket_list(@next_page)
+    else
+      record_was_not_found
+    end
   end
 
   def previous_page
-    view_ticket_list(@previous_page) unless @previous_page.empty?
+    unless @previous_page.empty?
+      view_ticket_list(@previous_page)
+    else
+      record_was_not_found
+    end
   end
 
   def ticket_list_header

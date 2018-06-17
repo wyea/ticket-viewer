@@ -182,8 +182,11 @@ RSpec.describe TicketPresenter do
     end
 
     context "when view_ticket_list wasn't executed yet" do
-      it "returns nil" do
-        expect(next_page).to be_nil
+      it "returns a message saying that the record wasn't found" do
+        expect(next_page).to eq(
+          "The record wasn't found... Most likely, it was deleted "\
+          "or you are from the future where it already exists."
+        )
       end
     end
 
@@ -205,15 +208,21 @@ RSpec.describe TicketPresenter do
     end
 
     context "when view_ticket_list wasn't executed yet" do
-      it "returns nil" do
-        expect(previous_page).to be_nil
+      it "returns a message saying that the record wasn't found" do
+        expect(previous_page).to eq(
+          "The record wasn't found... Most likely, it was deleted "\
+          "or you are from the future where it already exists."
+        )
       end
     end
 
     context "when we are on the first page and there is no previous one" do
-      it "returns nil" do
+      it "returns a message saying that the record wasn't found" do
         view_ticket_list
-        expect(previous_page).to be_nil
+        expect(previous_page).to eq(
+          "The record wasn't found... Most likely, it was deleted "\
+          "or you are from the future where it already exists."
+        )
       end
     end
   end
