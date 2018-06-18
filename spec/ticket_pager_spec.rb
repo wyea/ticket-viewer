@@ -129,6 +129,77 @@ RSpec.describe TicketPager do
     end
   end
 
+  describe "#footer" do
+    let(:footer) { subject.footer(hash) }
+    let(:paginate) { subject.paginate(hash) }
+
+    context "when the hash includes info about previous and next pages" do
+      let(:hash) {
+        {
+          "next_page" => "https://anar.zendesk.com/api/v2/tickets.json?"\
+          "page=4&per_page=25",
+          "previous_page" => "https://anar.zendesk.com/api/v2/tickets.json?"\
+            "page=2&per_page=25",
+          "count" => 101
+        }
+      }
+
+      it "returns a footer with info about previous and next pages" do
+        paginate
+        expect(footer).to include(
+          "<-- page 2  |   Total number of pages:  5   | page 4 -->"
+        )
+      end
+    end
+
+    context "when the hash includes info about previous page, but not next" do
+      let(:hash) {
+        {
+          "next_page" => nil,
+          "previous_page" => "https://anar.zendesk.com/api/v2/tickets.json?"\
+            "page=2&per_page=25",
+          "count" => 101
+        }
+      }
+
+      it "returns a footer with info about previous pages" do
+        paginate
+        expect(footer).to eq(
+          "    <-- page 2  |   Total number of pages:  5   | "
+        )
+      end
+    end
+
+    context "when the hash doesn't include info about number of tickets" do
+      let(:hash) {
+        {
+          "next_page" => nil,
+          "previous_page" => "https://anar.zendesk.com/api/v2/tickets.json?"\
+            "page=2&per_page=25",
+          "count" => nil
+        }
+      }
+
+      it "returns an empty string" do
+        paginate
+        expect(footer).to include("")
+      end
+    end
+  end
+
+  describe "#page_number" do
+    let(:page_number) { subject.page_number(string) }
+
+    context "when page number is 5" do
+      let(:string) { "https://www.example.com/api"\
+                     "/v2/tickets.json?page=5&per_page=25" }
+
+      it "returns 5" do
+        expect(page_number).to eq("5")
+      end
+    end
+  end
+
   describe "#next_page" do
     let(:next_page) { subject.next_page }
     let(:view_ticket_list) { subject.view_ticket_list(path) }

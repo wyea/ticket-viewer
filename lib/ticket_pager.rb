@@ -4,13 +4,11 @@ class TicketPager
   include TicketDownloader
 
   attr_accessor :multipage_mode
-  attr_reader   :number_of_pages
 
   def initialize
     @multipage_mode  = false
     @previous_page   = ""
     @next_page       = ""
-    @number_of_pages = 0
   end
 
   def view_ticket_list(path = ticket_list_first_page)
@@ -51,7 +49,7 @@ class TicketPager
         )
       end
       paginate(hash)
-      ticket_list_header + ticket_list.join("")
+      ticket_list_header + ticket_list.join("") + footer(hash)
     else
       "The server doesn't know anything about "\
         "the page you want to see... :-("
@@ -62,7 +60,26 @@ class TicketPager
     @multipage_mode  =  hash["next_page"] ? true : false
     @next_page       =  hash["next_page"] || ""
     @previous_page   =  hash["previous_page"] || ""
-    @number_of_pages = (hash["count"].to_f / 25).ceil
+  end
+
+  def footer(hash)
+    previous_page_number = unless @previous_page.empty?
+                             "<-- page #{page_number(@previous_page)}"
+                           end
+    next_page_number = unless @next_page.empty?
+                         "page #{page_number(@next_page)} -->"
+                       end
+    number_of_pages = (hash["count"].to_f / 25).ceil if hash["count"]
+
+    return "" unless number_of_pages
+
+    "#{previous_page_number || ''} ".rjust(15) +
+      " |   Total number of pages:  #{number_of_pages}   | " +
+      "#{next_page_number || ''}"
+  end
+
+  def page_number(string)
+    string.match(/(\?|&)page=\d*/).to_s.match(/\d+/).to_s
   end
 
   def next_page
