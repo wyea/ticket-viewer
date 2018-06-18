@@ -27,6 +27,8 @@ Once you're in the `ticket-viewer` directory, simply run `ruby lib/ticket_viewer
 4. `P`. Previous page, if there are more than 25 ticket in total.
 5. `M`. Go back to the main menu.
 
+NOTE: The last three commands will be available after you run the `A` command.
+
 ##### Testing
 To test the program, simply run `bundle exec rspec`.
 
