@@ -38,6 +38,8 @@ while command
   command = gets
   if command
     message = ticket_commander.enter_command(command.upcase.chomp)
+    puts
     puts message if message
+    puts
   end
 end

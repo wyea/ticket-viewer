@@ -15,7 +15,19 @@ class TicketPager
 
   def view_ticket_list(path = ticket_list_first_page)
     uri = ticket_list_uri(path)
-    response = fetch_info(uri)
+    begin
+      response = fetch_info(uri)
+    rescue SocketError => e
+      return e.message
+    end
+    if response && response.msg
+      generate_response(response)
+    else
+      "Sorry... something went terribly wrong..."
+    end
+  end
+
+  def generate_response(response)
     if response.msg == "OK"
       hash = convert(response)
       build_ticket_list(hash)
@@ -23,6 +35,8 @@ class TicketPager
       record_was_not_found
     elsif response.msg == "Unauthorized"
       unauthorized
+    else
+      "#{response.code} #{response.msg}"
     end
   end
 
